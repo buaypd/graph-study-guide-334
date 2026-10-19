@@ -73,7 +73,21 @@ public class Practice {
    * @return a sorted list of all reachable vertex values by
    */
   public static List<Integer> sortedReachable(Vertex<Integer> starting) {
-    return null;
+    return sortedReachable(starting, new HashSet<>());
+  }
+
+  private static List<Integer> sortedReachable(Vertex<Integer> current, Set<Vertex<Integer>> visited) {
+    if (current == null || visited.contains(current))
+      return new ArrayList<>();
+    List<Integer> list = new ArrayList<>();
+    visited.add(current);
+    list.add(current.data);
+
+    for (Vertex<Integer> neighbor : current.neighbors) {
+      list.addAll(sortedReachable(neighbor, visited));
+    }
+    Collections.sort(list);
+    return list;
   }
 
   /**
@@ -92,8 +106,6 @@ public class Practice {
   public static List<Integer> sortedReachable(Map<Integer, Set<Integer>> graph, int starting) {
     return null;
   }
-
-
 
   /**
    * Returns true if and only if it is possible both to reach v2 from v1 and to
@@ -114,8 +126,6 @@ public class Practice {
   public static <T> boolean twoWay(Vertex<T> v1, Vertex<T> v2) {
     return false;
   }
-
-
 
   /**
    * Returns whether there exists a path from the starting to ending vertex that
