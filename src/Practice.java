@@ -141,6 +141,25 @@ public class Practice {
    *         otherwise
    */
   public static <T> boolean twoWay(Vertex<T> v1, Vertex<T> v2) {
+    return twoWay(v1, v2, new HashSet<>()) && twoWay(v2, v1, new HashSet<>());
+  }
+
+  private static <T> boolean twoWay(Vertex<T> current, Vertex<T> target, Set<Vertex<T>> visited) {
+
+    // edge case
+    if (current == null || visited.contains(current))
+      return false;
+    // current to set
+    visited.add(current);
+    if (current == target) {
+      return true;
+    }
+
+    for (Vertex<T> niegbor : current.neighbors) {
+      if (twoWay(niegbor, target, visited)) {
+        return true;
+      }
+    }
     return false;
   }
 
