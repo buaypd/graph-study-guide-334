@@ -249,25 +249,49 @@ public class Practice {
   // return list;
   // }
 
-  public static List<Integer> sortedReachable(Map<Integer, Set<Integer>> graph, int starting) {
+  // public static List<Integer> sortedReachable(Map<Integer, Set<Integer>> graph, int starting) {
+  //   if (!graph.containsKey(starting)) {
+  //     return new ArrayList<>();
+  //   }
+  //   List<Integer> list = new ArrayList<>();
+  //   Set<Integer> visited = new HashSet<>();
+  //   Deque<Integer> stack = new ArrayDeque<>();
+
+  //   stack.push(starting);
+  //   while (!stack.isEmpty()) {
+  //     int current = stack.pop();
+  //     if (!visited.add(current)) {
+  //       continue;
+  //     }
+  //     list.add(current);
+
+  //     for (int neighbor : graph.getOrDefault(current, new HashSet<>())) {
+  //       if (!visited.contains(neighbor)) {
+  //         stack.push(neighbor);
+  //       }
+  //     }
+  //   }
+  //   Collections.sort(list);
+  //   return list;
+  // }
+
+    public static List<Integer> sortedReachable(Map<Integer, Set<Integer>> graph, int starting) {
     if (!graph.containsKey(starting)) {
       return new ArrayList<>();
     }
     List<Integer> list = new ArrayList<>();
     Set<Integer> visited = new HashSet<>();
-    Deque<Integer> stack = new ArrayDeque<>();
+    Queue<Integer> queue = new ArrayDeque<>();
 
-    stack.push(starting);
-    while (!stack.isEmpty()) {
-      int current = stack.pop();
-      if (!visited.add(current)) {
-        continue;
-      }
+    queue.offer(starting);
+    visited.add(starting);
+    while (!queue.isEmpty()) {
+      int current = queue.poll();
       list.add(current);
 
       for (int neighbor : graph.getOrDefault(current, new HashSet<>())) {
-        if (!visited.contains(neighbor)) {
-          stack.push(neighbor);
+        if (visited.add(neighbor)) {
+          queue.offer(neighbor);
         }
       }
     }
