@@ -249,33 +249,34 @@ public class Practice {
   // return list;
   // }
 
-  // public static List<Integer> sortedReachable(Map<Integer, Set<Integer>> graph, int starting) {
-  //   if (!graph.containsKey(starting)) {
-  //     return new ArrayList<>();
-  //   }
-  //   List<Integer> list = new ArrayList<>();
-  //   Set<Integer> visited = new HashSet<>();
-  //   Deque<Integer> stack = new ArrayDeque<>();
+  // public static List<Integer> sortedReachable(Map<Integer, Set<Integer>> graph,
+  // int starting) {
+  // if (!graph.containsKey(starting)) {
+  // return new ArrayList<>();
+  // }
+  // List<Integer> list = new ArrayList<>();
+  // Set<Integer> visited = new HashSet<>();
+  // Deque<Integer> stack = new ArrayDeque<>();
 
-  //   stack.push(starting);
-  //   while (!stack.isEmpty()) {
-  //     int current = stack.pop();
-  //     if (!visited.add(current)) {
-  //       continue;
-  //     }
-  //     list.add(current);
+  // stack.push(starting);
+  // while (!stack.isEmpty()) {
+  // int current = stack.pop();
+  // if (!visited.add(current)) {
+  // continue;
+  // }
+  // list.add(current);
 
-  //     for (int neighbor : graph.getOrDefault(current, new HashSet<>())) {
-  //       if (!visited.contains(neighbor)) {
-  //         stack.push(neighbor);
-  //       }
-  //     }
-  //   }
-  //   Collections.sort(list);
-  //   return list;
+  // for (int neighbor : graph.getOrDefault(current, new HashSet<>())) {
+  // if (!visited.contains(neighbor)) {
+  // stack.push(neighbor);
+  // }
+  // }
+  // }
+  // Collections.sort(list);
+  // return list;
   // }
 
-    public static List<Integer> sortedReachable(Map<Integer, Set<Integer>> graph, int starting) {
+  public static List<Integer> sortedReachable(Map<Integer, Set<Integer>> graph, int starting) {
     if (!graph.containsKey(starting)) {
       return new ArrayList<>();
     }
@@ -315,24 +316,53 @@ public class Practice {
    * @return true if there is a two-way connection between v1 and v2, false
    *         otherwise
    */
+  // public static <T> boolean twoWay(Vertex<T> v1, Vertex<T> v2) {
+  // return twoWay(v1, v2, new HashSet<>()) && twoWay(v2, v1, new HashSet<>());
+  // }
+
+  // private static <T> boolean twoWay(Vertex<T> current, Vertex<T> target,
+  // Set<Vertex<T>> visited) {
+
+  // // edge case
+  // if (current == null || visited.contains(current))
+  // return false;
+  // // current to set
+  // visited.add(current);
+  // if (current == target) {
+  // return true;
+  // }
+
+  // for (Vertex<T> niegbor : current.neighbors) {
+  // if (twoWay(niegbor, target, visited)) {
+  // return true;
+  // }
+  // }
+  // return false;
+  // }
   public static <T> boolean twoWay(Vertex<T> v1, Vertex<T> v2) {
-    return twoWay(v1, v2, new HashSet<>()) && twoWay(v2, v1, new HashSet<>());
+    return twoWayHelper(v1, v2) && twoWayHelper(v2, v1);
   }
 
-  private static <T> boolean twoWay(Vertex<T> current, Vertex<T> target, Set<Vertex<T>> visited) {
-
+  private static <T> boolean twoWayHelper(Vertex<T> start, Vertex<T> target) {
     // edge case
-    if (current == null || visited.contains(current))
+    if (start == null || target == null)
       return false;
-    // current to set
-    visited.add(current);
-    if (current == target) {
-      return true;
-    }
+    Set<Vertex<T>> visited = new HashSet<>();
+    Deque<Vertex<T>> stack = new ArrayDeque<>();
+    stack.push(start);
 
-    for (Vertex<T> niegbor : current.neighbors) {
-      if (twoWay(niegbor, target, visited)) {
+    while (!stack.isEmpty()) {
+      Vertex<T> current = stack.pop();
+      if (current == target) {
         return true;
+      }
+      if (!visited.add(current)) {
+        continue;
+      }
+      for (Vertex<T> neighbor : current.neighbors) {
+        if (!visited.contains(neighbor)) {
+          stack.push(neighbor);
+        }
       }
     }
     return false;
