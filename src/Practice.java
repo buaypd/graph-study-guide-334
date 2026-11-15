@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 
 public class Practice {
 
@@ -137,21 +138,51 @@ public class Practice {
    * @param starting the starting vertex (may be null)
    * @return a sorted list of all reachable vertex values by
    */
+  // public static List<Integer> sortedReachable(Vertex<Integer> starting) {
+  // return sortedReachable(starting, new HashSet<>());
+  // }
+
+  // private static List<Integer> sortedReachable(Vertex<Integer> current,
+  // Set<Vertex<Integer>> visited) {
+  // if (current == null || visited.contains(current))
+  // return new ArrayList<>();
+  // List<Integer> list = new ArrayList<>();
+
+  // visited.add(current);
+  // list.add(current.data);
+
+  // for (Vertex<Integer> neighbor : current.neighbors) {
+  // list.addAll(sortedReachable(neighbor, visited));
+  // }
+  // Collections.sort(list);
+  // return list;
+  // }
+
   public static List<Integer> sortedReachable(Vertex<Integer> starting) {
-    return sortedReachable(starting, new HashSet<>());
-  }
-
-  private static List<Integer> sortedReachable(Vertex<Integer> current, Set<Vertex<Integer>> visited) {
-    if (current == null || visited.contains(current))
+    if (starting == null) {
       return new ArrayList<>();
-    List<Integer> list = new ArrayList<>();
-
-    visited.add(current);
-    list.add(current.data);
-
-    for (Vertex<Integer> neighbor : current.neighbors) {
-      list.addAll(sortedReachable(neighbor, visited));
     }
+
+    List<Integer> list = new ArrayList<>();
+    Set<Vertex<Integer>> visited = new HashSet<>();
+    Deque<Vertex<Integer>> stack = new ArrayDeque<>();
+
+     stack.push(starting);
+
+    while (!stack.isEmpty()) {
+      Vertex<Integer> current = stack.pop();
+      if (!visited.add(current)){
+        continue;
+      }
+      list.add(current.data);
+
+      for (Vertex<Integer> neighbor : current.neighbors) {
+        if (!visited.contains(neighbor)) {
+          stack.push(neighbor);
+        }
+      }
+    }
+
     Collections.sort(list);
     return list;
   }
