@@ -6,6 +6,7 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
@@ -503,31 +504,56 @@ public class Practice {
    *         company, false otherwise
    */
 
+  // public static boolean hasExtendedConnectionAtCompany(Professional person, String companyName) {
+  //   if (person == null) {
+  //     return false;
+  //   }
+  //   return hasExtendedConnectionAtCompany(person, companyName, new HashSet<>());
+  // }
+
+  // private static boolean hasExtendedConnectionAtCompany(Professional currentPerson, String companyName,
+  //     Set<Professional> visited) {
+  //   if (currentPerson == null || visited.contains(currentPerson)) {
+  //     return false;
+  //   }
+  //   visited.add(currentPerson);
+
+  //   if (currentPerson.getCompany().equals(companyName)) {
+  //     return true;
+  //   }
+
+  //   for (Professional professional : currentPerson.getConnections()) {
+  //     if (hasExtendedConnectionAtCompany(professional, companyName, visited)) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
   public static boolean hasExtendedConnectionAtCompany(Professional person, String companyName) {
-    if (person == null) {
-      return false;
-    }
-    return hasExtendedConnectionAtCompany(person, companyName, new HashSet<>());
-  }
-
-  private static boolean hasExtendedConnectionAtCompany(Professional currentPerson, String companyName,
-      Set<Professional> visited) {
-    if (currentPerson == null || visited.contains(currentPerson)) {
-      return false;
-    }
-    visited.add(currentPerson);
-
-    if (currentPerson.getCompany().equals(companyName)) {
-      return true;
-    }
-
-    for (Professional professional : currentPerson.getConnections()) {
-      if (hasExtendedConnectionAtCompany(professional, companyName, visited)) {
-        return true;
-      }
-    }
+  if (person == null) {
     return false;
   }
+
+  Set<Professional> visited = new HashSet<>();
+  Deque<Professional> stack = new ArrayDeque<>();
+  stack.push(person);
+
+  while (!stack.isEmpty()) {
+    Professional current = stack.pop();
+    if (!visited.add(current)) {
+      continue;
+    }
+    if (Objects.equals(current.getCompany(), companyName)) {
+      return true;
+    }
+    for (Professional connection : current.getConnections()) {
+      if (connection != null && !visited.contains(connection)) {
+        stack.push(connection);
+      }
+    }
+  }
+  return false;
+}
 
   /**
    * Returns a list of possible next moves starting from a given position.
