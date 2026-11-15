@@ -339,7 +339,36 @@ public class Practice {
   // }
   // return false;
   // }
-  public static <T> boolean twoWay(Vertex<T> v1, Vertex<T> v2) {
+  // public static <T> boolean twoWay(Vertex<T> v1, Vertex<T> v2) {
+  //   return twoWayHelper(v1, v2) && twoWayHelper(v2, v1);
+  // }
+
+  // private static <T> boolean twoWayHelper(Vertex<T> start, Vertex<T> target) {
+  //   // edge case
+  //   if (start == null || target == null)
+  //     return false;
+  //   Set<Vertex<T>> visited = new HashSet<>();
+  //   Deque<Vertex<T>> stack = new ArrayDeque<>();
+  //   stack.push(start);
+
+  //   while (!stack.isEmpty()) {
+  //     Vertex<T> current = stack.pop();
+  //     if (current == target) {
+  //       return true;
+  //     }
+  //     if (!visited.add(current)) {
+  //       continue;
+  //     }
+  //     for (Vertex<T> neighbor : current.neighbors) {
+  //       if (!visited.contains(neighbor)) {
+  //         stack.push(neighbor);
+  //       }
+  //     }
+  //   }
+  //   return false;
+  // }
+  
+    public static <T> boolean twoWay(Vertex<T> v1, Vertex<T> v2) {
     return twoWayHelper(v1, v2) && twoWayHelper(v2, v1);
   }
 
@@ -348,20 +377,19 @@ public class Practice {
     if (start == null || target == null)
       return false;
     Set<Vertex<T>> visited = new HashSet<>();
-    Deque<Vertex<T>> stack = new ArrayDeque<>();
-    stack.push(start);
+    Queue<Vertex<T>> queue = new ArrayDeque<>();
+    queue.add(start);
+    visited.add(start);
 
-    while (!stack.isEmpty()) {
-      Vertex<T> current = stack.pop();
+    while (!queue.isEmpty()) {
+      Vertex<T> current = queue.poll();
       if (current == target) {
         return true;
       }
-      if (!visited.add(current)) {
-        continue;
-      }
+ 
       for (Vertex<T> neighbor : current.neighbors) {
-        if (!visited.contains(neighbor)) {
-          stack.push(neighbor);
+        if (visited.add(neighbor)) {
+          queue.offer(neighbor);
         }
       }
     }
