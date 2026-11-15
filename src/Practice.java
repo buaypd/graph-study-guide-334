@@ -340,35 +340,35 @@ public class Practice {
   // return false;
   // }
   // public static <T> boolean twoWay(Vertex<T> v1, Vertex<T> v2) {
-  //   return twoWayHelper(v1, v2) && twoWayHelper(v2, v1);
+  // return twoWayHelper(v1, v2) && twoWayHelper(v2, v1);
   // }
 
   // private static <T> boolean twoWayHelper(Vertex<T> start, Vertex<T> target) {
-  //   // edge case
-  //   if (start == null || target == null)
-  //     return false;
-  //   Set<Vertex<T>> visited = new HashSet<>();
-  //   Deque<Vertex<T>> stack = new ArrayDeque<>();
-  //   stack.push(start);
+  // // edge case
+  // if (start == null || target == null)
+  // return false;
+  // Set<Vertex<T>> visited = new HashSet<>();
+  // Deque<Vertex<T>> stack = new ArrayDeque<>();
+  // stack.push(start);
 
-  //   while (!stack.isEmpty()) {
-  //     Vertex<T> current = stack.pop();
-  //     if (current == target) {
-  //       return true;
-  //     }
-  //     if (!visited.add(current)) {
-  //       continue;
-  //     }
-  //     for (Vertex<T> neighbor : current.neighbors) {
-  //       if (!visited.contains(neighbor)) {
-  //         stack.push(neighbor);
-  //       }
-  //     }
-  //   }
-  //   return false;
+  // while (!stack.isEmpty()) {
+  // Vertex<T> current = stack.pop();
+  // if (current == target) {
+  // return true;
   // }
-  
-    public static <T> boolean twoWay(Vertex<T> v1, Vertex<T> v2) {
+  // if (!visited.add(current)) {
+  // continue;
+  // }
+  // for (Vertex<T> neighbor : current.neighbors) {
+  // if (!visited.contains(neighbor)) {
+  // stack.push(neighbor);
+  // }
+  // }
+  // }
+  // return false;
+  // }
+
+  public static <T> boolean twoWay(Vertex<T> v1, Vertex<T> v2) {
     return twoWayHelper(v1, v2) && twoWayHelper(v2, v1);
   }
 
@@ -386,7 +386,7 @@ public class Practice {
       if (current == target) {
         return true;
       }
- 
+
       for (Vertex<T> neighbor : current.neighbors) {
         if (visited.add(neighbor)) {
           queue.offer(neighbor);
@@ -413,25 +413,54 @@ public class Practice {
    * @return whether there exists a valid positive path from starting to ending
    */
 
+  // public static boolean positivePathExists(Map<Integer, Set<Integer>> graph,
+  // int starting, int ending) {
+  // if (starting <= 0 || ending <= 0 || !graph.containsKey(starting) ||
+  // !graph.containsKey(ending)) {
+  // return false;
+  // }
+  // return positivePathExists(graph, starting, ending, new HashSet<>());
+  // }
+
+  // private static boolean positivePathExists(Map<Integer, Set<Integer>> graph,
+  // int current, int ending,
+  // Set<Integer> visited) {
+  // if (visited.contains(current))
+  // return false;
+
+  // visited.add(current);
+  // if (current == ending)
+  // return true;
+
+  // for (Integer neighor : graph.getOrDefault(current, new HashSet<>())) {
+  // if (neighor > 0 && positivePathExists(graph, neighor, ending, visited)) {
+  // return true;
+  // }
+  // }
+  // return false;
+  // }
+
   public static boolean positivePathExists(Map<Integer, Set<Integer>> graph, int starting, int ending) {
     if (starting <= 0 || ending <= 0 || !graph.containsKey(starting) || !graph.containsKey(ending)) {
       return false;
     }
-    return positivePathExists(graph, starting, ending, new HashSet<>());
-  }
+    Set<Integer> visited = new HashSet<>();
+    Deque<Integer> stack = new ArrayDeque<>();
+    stack.push(starting);
 
-  private static boolean positivePathExists(Map<Integer, Set<Integer>> graph, int current, int ending,
-      Set<Integer> visited) {
-    if (visited.contains(current))
-      return false;
+    while (!stack.isEmpty()) {
+      int current = stack.pop();
+      if (!visited.add(current)) {
+        continue;
+      }
 
-    visited.add(current);
-    if (current == ending)
-      return true;
-
-    for (Integer neighor : graph.getOrDefault(current, new HashSet<>())) {
-      if (neighor > 0 && positivePathExists(graph, neighor, ending, visited)) {
+      if (current == ending)
         return true;
+
+      for (Integer neighbor : graph.getOrDefault(current, new HashSet<>())) {
+        if (neighbor > 0 && !visited.contains(neighbor)) {
+          stack.push(neighbor);
+        }
       }
     }
     return false;
