@@ -226,22 +226,50 @@ public class Practice {
    * @param starting the starting vertex value
    * @return a sorted list of all reachable vertex values
    */
+  // public static List<Integer> sortedReachable(Map<Integer, Set<Integer>> graph,
+  // int starting) {
+  // if (!graph.containsKey(starting)) {
+  // return new ArrayList<>();
+  // }
+  // return sortedReachable(graph, starting, new HashSet<>());
+  // }
+
+  // private static List<Integer> sortedReachable(Map<Integer, Set<Integer>>
+  // graph, int current, Set<Integer> visited) {
+  // List<Integer> list = new ArrayList<>();
+  // if (visited.contains(current)) {
+  // return new ArrayList<>();
+  // }
+  // list.add(current);
+  // visited.add(current);
+  // for (Integer neighbor : graph.getOrDefault(current, new HashSet<>())) {
+  // list.addAll(sortedReachable(graph, neighbor, visited));
+  // }
+  // Collections.sort(list);
+  // return list;
+  // }
+
   public static List<Integer> sortedReachable(Map<Integer, Set<Integer>> graph, int starting) {
     if (!graph.containsKey(starting)) {
       return new ArrayList<>();
     }
-    return sortedReachable(graph, starting, new HashSet<>());
-  }
-
-  private static List<Integer> sortedReachable(Map<Integer, Set<Integer>> graph, int current, Set<Integer> visited) {
     List<Integer> list = new ArrayList<>();
-    if (visited.contains(current)) {
-      return new ArrayList<>();
-    }
-    list.add(current);
-    visited.add(current);
-    for (Integer neighbor : graph.getOrDefault(current, new HashSet<>())) {
-      list.addAll(sortedReachable(graph, neighbor, visited));
+    Set<Integer> visited = new HashSet<>();
+    Deque<Integer> stack = new ArrayDeque<>();
+
+    stack.push(starting);
+    while (!stack.isEmpty()) {
+      int current = stack.pop();
+      if (!visited.add(current)) {
+        continue;
+      }
+      list.add(current);
+
+      for (int neighbor : graph.getOrDefault(current, new HashSet<>())) {
+        if (!visited.contains(neighbor)) {
+          stack.push(neighbor);
+        }
+      }
     }
     Collections.sort(list);
     return list;
