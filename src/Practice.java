@@ -158,6 +158,34 @@ public class Practice {
   // return list;
   // }
 
+  // public static List<Integer> sortedReachable(Vertex<Integer> starting) {
+  // if (starting == null) {
+  // return new ArrayList<>();
+  // }
+
+  // List<Integer> list = new ArrayList<>();
+  // Set<Vertex<Integer>> visited = new HashSet<>();
+  // Deque<Vertex<Integer>> stack = new ArrayDeque<>();
+
+  // stack.push(starting);
+
+  // while (!stack.isEmpty()) {
+  // Vertex<Integer> current = stack.pop();
+  // if (!visited.add(current)){
+  // continue;
+  // }
+  // list.add(current.data);
+
+  // for (Vertex<Integer> neighbor : current.neighbors) {
+  // if (!visited.contains(neighbor)) {
+  // stack.push(neighbor);
+  // }
+  // }
+  // }
+
+  // Collections.sort(list);
+  // return list;
+  // }
   public static List<Integer> sortedReachable(Vertex<Integer> starting) {
     if (starting == null) {
       return new ArrayList<>();
@@ -165,20 +193,18 @@ public class Practice {
 
     List<Integer> list = new ArrayList<>();
     Set<Vertex<Integer>> visited = new HashSet<>();
-    Deque<Vertex<Integer>> stack = new ArrayDeque<>();
+    Queue<Vertex<Integer>> queue = new ArrayDeque<>();
 
-     stack.push(starting);
+    queue.offer(starting);
+    visited.add(starting);
 
-    while (!stack.isEmpty()) {
-      Vertex<Integer> current = stack.pop();
-      if (!visited.add(current)){
-        continue;
-      }
+    while (!queue.isEmpty()) {
+      Vertex<Integer> current = queue.poll();
       list.add(current.data);
 
       for (Vertex<Integer> neighbor : current.neighbors) {
-        if (!visited.contains(neighbor)) {
-          stack.push(neighbor);
+        if (visited.add(neighbor)) {
+          queue.offer(neighbor);
         }
       }
     }
