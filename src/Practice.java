@@ -529,26 +529,50 @@ public class Practice {
   //   }
   //   return false;
   // }
-  public static boolean hasExtendedConnectionAtCompany(Professional person, String companyName) {
+//   public static boolean hasExtendedConnectionAtCompany(Professional person, String companyName) {
+//   if (person == null) {
+//     return false;
+//   }
+
+//   Set<Professional> visited = new HashSet<>();
+//   Deque<Professional> stack = new ArrayDeque<>();
+//   stack.push(person);
+
+//   while (!stack.isEmpty()) {
+//     Professional current = stack.pop();
+//     if (!visited.add(current)) {
+//       continue;
+//     }
+//     if (Objects.equals(current.getCompany(), companyName)) {
+//       return true;
+//     }
+//     for (Professional connection : current.getConnections()) {
+//       if (connection != null && !visited.contains(connection)) {
+//         stack.push(connection);
+//       }
+//     }
+//   }
+//   return false;
+// }
+
+public static boolean hasExtendedConnectionAtCompany(Professional person, String companyName) {
   if (person == null) {
     return false;
   }
 
   Set<Professional> visited = new HashSet<>();
-  Deque<Professional> stack = new ArrayDeque<>();
-  stack.push(person);
+  Queue<Professional> queue = new ArrayDeque<>();
+  queue.offer(person);
+  visited.add(person);
 
-  while (!stack.isEmpty()) {
-    Professional current = stack.pop();
-    if (!visited.add(current)) {
-      continue;
-    }
+  while (!queue.isEmpty()) {
+    Professional current = queue.poll();
     if (Objects.equals(current.getCompany(), companyName)) {
       return true;
     }
     for (Professional connection : current.getConnections()) {
-      if (connection != null && !visited.contains(connection)) {
-        stack.push(connection);
+      if (connection != null && visited.add(connection)) {
+        queue.offer(connection);
       }
     }
   }
