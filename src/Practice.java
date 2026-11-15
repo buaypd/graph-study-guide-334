@@ -440,26 +440,50 @@ public class Practice {
   // return false;
   // }
 
-  public static boolean positivePathExists(Map<Integer, Set<Integer>> graph, int starting, int ending) {
+  // public static boolean positivePathExists(Map<Integer, Set<Integer>> graph, int starting, int ending) {
+  //   if (starting <= 0 || ending <= 0 || !graph.containsKey(starting) || !graph.containsKey(ending)) {
+  //     return false;
+  //   }
+  //   Set<Integer> visited = new HashSet<>();
+  //   Deque<Integer> stack = new ArrayDeque<>();
+  //   stack.push(starting);
+
+  //   while (!stack.isEmpty()) {
+  //     int current = stack.pop();
+  //     if (!visited.add(current)) {
+  //       continue;
+  //     }
+
+  //     if (current == ending)
+  //       return true;
+
+  //     for (Integer neighbor : graph.getOrDefault(current, new HashSet<>())) {
+  //       if (neighbor > 0 && !visited.contains(neighbor)) {
+  //         stack.push(neighbor);
+  //       }
+  //     }
+  //   }
+  //   return false;
+  // }
+
+    public static boolean positivePathExists(Map<Integer, Set<Integer>> graph, int starting, int ending) {
     if (starting <= 0 || ending <= 0 || !graph.containsKey(starting) || !graph.containsKey(ending)) {
       return false;
     }
     Set<Integer> visited = new HashSet<>();
-    Deque<Integer> stack = new ArrayDeque<>();
-    stack.push(starting);
+    Queue<Integer> queue = new ArrayDeque<>();
+    queue.add(starting);
+    visited.add(starting);
 
-    while (!stack.isEmpty()) {
-      int current = stack.pop();
-      if (!visited.add(current)) {
-        continue;
-      }
-
+    while (!queue.isEmpty()) {
+      int current = queue.poll();
+   
       if (current == ending)
         return true;
 
       for (Integer neighbor : graph.getOrDefault(current, new HashSet<>())) {
-        if (neighbor > 0 && !visited.contains(neighbor)) {
-          stack.push(neighbor);
+        if (neighbor > 0 && visited.add(neighbor)) {
+          queue.offer(neighbor);
         }
       }
     }
